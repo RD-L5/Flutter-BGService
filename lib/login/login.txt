@@ -1,0 +1,161 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart'; // Import to access kIsWeb
+import 'package:chatbootai/homepage.dart'; // Your HomePage widget
+
+class LoginScreen extends StatelessWidget {
+  // Controllers to capture user input for email and password
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth > 600) {
+            // Display for larger screens like web or tablet
+            return Row(
+              children: [
+                // Left side for web (Logo or large section)
+                Expanded(
+                  child: Container(
+                    color: Colors.blue.shade700,
+                    child: Center(
+                      child: Text(
+                        'AdminExpress',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                // Right side for login form
+                Expanded(
+                  child: Center(
+                    child: Container(
+                      width: 400,
+                      child: loginForm(context),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          } else {
+            // Display for mobile
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: loginForm(context),
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Widget loginForm(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Let's Sign In 🔐",
+          style: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 10),
+        Text(
+          "Enter your details below to continue.",
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.grey.shade600,
+          ),
+        ),
+        SizedBox(height: 20),
+        TextField(
+          controller: emailController,
+          decoration: InputDecoration(
+            labelText: 'Email',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
+        SizedBox(height: 20),
+        TextField(
+          controller: passwordController,
+          obscureText: true,
+          decoration: InputDecoration(
+            labelText: 'Password',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
+        SizedBox(height: 10),
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton(
+            onPressed: () {},
+            child: Text('Forgot password?'),
+          ),
+        ),
+        SizedBox(height: 20),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              backgroundColor: Colors.blue.shade700, // Updated Button color
+            ),
+            onPressed: () {
+              // Get email and password from text controllers
+              String username = emailController.text;
+              String password = passwordController.text;
+
+              // Hardcoded login credentials
+              if (username == 'admin' && password == '1234') {
+                // Navigate to HomePage if credentials are correct
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(),
+                  ),
+                );
+              } else {
+                // Show error if login fails
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Invalid credentials')),
+                );
+              }
+            },
+            child: Text('Sign In'),
+          ),
+        ),
+        SizedBox(height: 20),
+        Center(
+          child: GestureDetector(
+            onTap: () {
+              // Navigate to sign up screen (if needed)
+            },
+            child: Text(
+              "Don't have an account? Sign Up",
+              style: TextStyle(
+                color: Colors.blue,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
